@@ -22,13 +22,16 @@ export default function Button({
   to,
   variant = 'primary',
   size = 'lg',
+  disabled = false,
   className = '',
   children,
   ...props
 }) {
   const classes = `${BASE} ${VARIANTS[variant]} ${SIZES[size]} ${className}`
 
-  if (to) {
+  // A disabled link still navigates on click, so fall back to a real disabled
+  // button whenever the action isn't available yet.
+  if (to && !disabled) {
     return (
       <Link to={to} className={classes} {...props}>
         {children}
@@ -37,7 +40,7 @@ export default function Button({
   }
 
   return (
-    <button type="button" className={classes} {...props}>
+    <button type="button" className={classes} disabled={disabled} {...props}>
       {children}
     </button>
   )
