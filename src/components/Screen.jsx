@@ -22,14 +22,26 @@ function ProgressBar({ step }) {
  * Standard screen chrome: an optional back button + progress bar, a scrolling
  * body, and an optional pinned footer for the primary action.
  */
-export default function Screen({ title, step = null, showBack = true, footer, children }) {
+export default function Screen({
+  title,
+  step = null,
+  showBack = true,
+  eyebrow,
+  action,
+  footer,
+  children,
+}) {
   const navigate = useNavigate()
-  const hasHeader = showBack || step !== null || title
+
+  // A screen with no back button and no title still needs the status-bar inset,
+  // otherwise its content sits under the notch. The header always renders; only
+  // its contents are conditional.
+  const hasHeaderRow = showBack || step !== null || action
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      {hasHeader && (
-        <header className="pt-safe shrink-0 px-5 pb-3">
+      <header className="pt-safe shrink-0 px-5 pb-3">
+        {hasHeaderRow && (
           <div className="flex h-11 items-center gap-3">
             {showBack && (
               <button
@@ -46,15 +58,27 @@ export default function Screen({ title, step = null, showBack = true, footer, ch
                 Step {step} of {TOTAL_STEPS}
               </span>
             )}
+            {action && <div className="ml-auto">{action}</div>}
           </div>
-          {step !== null && <ProgressBar step={step} />}
-          {title && (
-            <h1 className="mt-5 text-2xl leading-tight font-bold tracking-tight text-balance">
-              {title}
-            </h1>
-          )}
-        </header>
-      )}
+        )}
+
+        {step !== null && <ProgressBar step={step} />}
+
+        {(title || eyebrow) && (
+          <div className={hasHeaderRow ? 'mt-5' : 'mt-2'}>
+            {eyebrow && (
+              <p className="text-[11px] font-bold tracking-wide text-brand-dark uppercase">
+                {eyebrow}
+              </p>
+            )}
+            {title && (
+              <h1 className="mt-1 text-2xl leading-tight font-bold tracking-tight text-balance">
+                {title}
+              </h1>
+            )}
+          </div>
+        )}
+      </header>
 
       <main className="min-h-0 flex-1 overflow-y-auto px-5 pb-6">{children}</main>
 
