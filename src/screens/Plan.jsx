@@ -1,9 +1,10 @@
 import { useMemo } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Screen from '../components/Screen.jsx'
 import Button from '../components/Button.jsx'
-import { ArrowRight, Calendar, Check, Sparkle, Target } from '../components/Icons.jsx'
+import { ArrowRight, Calendar, Check, ChevronRight, Sparkle, Target } from '../components/Icons.jsx'
 import { useProfile } from '../state/ProfileContext.jsx'
+import { useSession } from '../state/SessionContext.jsx'
 import { generatePlan } from '../data/planGenerator.js'
 
 function Stat({ icon: Icon, value, label }) {
@@ -20,16 +21,24 @@ function Stat({ icon: Icon, value, label }) {
 
 export default function Plan() {
   const { profile } = useProfile()
+  const { startDay } = useSession()
+  const navigate = useNavigate()
   const plan = useMemo(() => generatePlan(profile), [profile])
 
   const answered = profile.goals.length > 0
+
+  /** Open a day and hand off to the workout screen. */
+  function openDay(index) {
+    startDay(index)
+    navigate('/workout')
+  }
 
   return (
     <Screen
       showBack
       footer={
         <>
-          <Button to="/workout">
+          <Button onClick={() => openDay(1)}>
             Start Day 1
             <ArrowRight size={20} />
           </Button>
@@ -97,7 +106,11 @@ export default function Plan() {
         <div className="mt-3 space-y-3">
           {plan.days.map((day) => (
             <article key={day.key} className="overflow-hidden rounded-2xl bg-card ring-1 ring-line">
-              <header className="flex items-center gap-3 border-b border-line bg-cream/60 px-4 py-3">
+              <button
+                type="button"
+                onClick={() => openDay(day.index)}
+                className="flex w-full items-center gap-3 border-b border-line bg-cream/60 px-4 py-3 text-left transition hover:bg-cream"
+              >
                 <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-brand text-sm font-bold text-white">
                   {day.index}
                 </span>
@@ -108,7 +121,8 @@ export default function Plan() {
                 <span className="ml-auto shrink-0 text-xs font-medium text-muted">
                   {day.exercises.length} moves
                 </span>
-              </header>
+                <ChevronRight size={16} className="shrink-0 text-muted" />
+              </button>
 
               <ul className="divide-y divide-line">
                 {day.exercises.map((exercise) => (

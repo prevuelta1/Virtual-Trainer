@@ -97,6 +97,39 @@ export function Sparkle(props) {
   )
 }
 
+export function Clock(props) {
+  return (
+    <Svg {...props}>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 7.5V12l3 1.75" />
+    </Svg>
+  )
+}
+
+export function Play(props) {
+  return (
+    <Svg {...props}>
+      <path d="M8.5 6.5 17 12l-8.5 5.5z" />
+    </Svg>
+  )
+}
+
+export function ChevronRight(props) {
+  return (
+    <Svg {...props}>
+      <path d="m9.5 6 6 6-6 6" />
+    </Svg>
+  )
+}
+
+export function Flame(props) {
+  return (
+    <Svg {...props}>
+      <path d="M12 3.5s5 4 5 8.5a5 5 0 0 1-10 0c0-1.6.6-2.9 1.4-4 .3 1 .9 1.7 1.7 2 .3-2.9 1.9-5.3 1.9-6.5z" />
+    </Svg>
+  )
+}
+
 export function Blueprint(props) {
   return (
     <Svg {...props}>

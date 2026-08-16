@@ -89,7 +89,7 @@ export const FLOW = [
   },
   {
     key: 'exercise',
-    path: '/workout/exercise',
+    path: '/workout/exercise/:exerciseId',
     title: 'Exercise details',
     step: null,
     blurb: 'Everything a beginner needs to do one movement without feeling lost.',

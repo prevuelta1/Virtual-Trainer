@@ -38,11 +38,11 @@ export const GOALS = [
 
 /** Rep scheme keyed on the primary goal. */
 const REP_SCHEMES = {
-  'get-stronger': { sets: 4, reps: '5', rest: '2–3 min', focus: 'heavier weight, longer rest' },
-  'build-muscle': { sets: 3, reps: '8–10', rest: '90 sec', focus: 'moderate weight, steady volume' },
-  'feel-healthier': { sets: 3, reps: '10', rest: '60–90 sec', focus: 'comfortable weight, good form' },
-  'lose-fat': { sets: 3, reps: '12–15', rest: '45–60 sec', focus: 'higher reps, shorter rest' },
-  'build-confidence': { sets: 3, reps: '8', rest: '90 sec', focus: 'simple movements, repeated often' },
+  'get-stronger': { sets: 4, reps: '5', rest: '2–3 min', restSeconds: 150, focus: 'heavier weight, longer rest' },
+  'build-muscle': { sets: 3, reps: '8–10', rest: '90 sec', restSeconds: 90, focus: 'moderate weight, steady volume' },
+  'feel-healthier': { sets: 3, reps: '10', rest: '60–90 sec', restSeconds: 75, focus: 'comfortable weight, good form' },
+  'lose-fat': { sets: 3, reps: '12–15', rest: '45–60 sec', restSeconds: 50, focus: 'higher reps, shorter rest' },
+  'build-confidence': { sets: 3, reps: '8', rest: '90 sec', restSeconds: 90, focus: 'simple movements, repeated often' },
 }
 
 const DEFAULT_SCHEME = REP_SCHEMES['feel-healthier']
