@@ -1,19 +1,19 @@
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import Screen from '../components/Screen.jsx'
 import Button from '../components/Button.jsx'
 import ExerciseVisual from '../components/ExerciseVisual.jsx'
-import { ArrowLeft, Target } from '../components/Icons.jsx'
+import { ArrowRight, Check, Target } from '../components/Icons.jsx'
 import { exerciseById, PATTERN_LABELS } from '../data/exercises.js'
 import { useActiveDay } from '../state/usePlan.js'
 
 export default function ExerciseDetails() {
   const { exerciseId } = useParams()
   const { day, plan } = useActiveDay()
-  const navigate = useNavigate()
 
   // Prefer today's version, which carries the prescribed sets and reps. Fall
   // back to the library so a deep link still renders something useful.
-  const planned = day.exercises.find((item) => item.id === exerciseId)
+  const plannedIndex = day.exercises.findIndex((item) => item.id === exerciseId)
+  const planned = plannedIndex >= 0 ? day.exercises[plannedIndex] : null
   const exercise = planned ?? exerciseById(exerciseId)
 
   if (!exercise) {
@@ -27,21 +27,55 @@ export default function ExerciseDetails() {
     )
   }
 
+  // Only movements that are actually in today's workout have a position in it,
+  // so a deep link to something else gets the return action rather than a
+  // meaningless "next".
+  const total = day.exercises.length
+  const position = planned ? plannedIndex + 1 : null
+  const next = planned ? (day.exercises[plannedIndex + 1] ?? null) : null
+
   return (
     <Screen
       footer={
-        <Button onClick={() => navigate(-1)} variant="secondary">
-          <ArrowLeft size={20} />
-          Back to workout
-        </Button>
+        next ? (
+          <>
+            {/* `replace` keeps the history stack flat, so the back arrow returns
+                to the workout instead of walking back through every movement. */}
+            <Button to={`/workout/exercise/${next.id}`} replace>
+              Next exercise
+              <ArrowRight size={20} />
+            </Button>
+            <p className="mt-2.5 truncate text-center text-xs text-muted">
+              Up next: {next.name}
+            </p>
+          </>
+        ) : (
+          <>
+            <Button to="/workout">
+              <Check size={20} />
+              Back to workout
+            </Button>
+            <p className="mt-2.5 text-center text-xs text-muted">
+              {planned ? `Last exercise of ${day.name}` : 'Not part of today’s workout'}
+            </p>
+          </>
+        )
       }
     >
       <ExerciseVisual name={exercise.name} />
 
       <header className="mt-5">
-        <span className="text-[11px] font-bold tracking-wide text-brand-dark uppercase">
-          {PATTERN_LABELS[exercise.pattern] ?? 'Movement'}
-        </span>
+        <div className="flex items-center justify-between gap-3">
+          <span className="text-[11px] font-bold tracking-wide text-brand-dark uppercase">
+            {PATTERN_LABELS[exercise.pattern] ?? 'Movement'}
+          </span>
+          {position && (
+            <span className="shrink-0 text-[11px] font-medium text-muted">
+              Exercise {position} of {total}
+            </span>
+          )}
+        </div>
+
         <h1 className="mt-1 text-2xl leading-tight font-bold tracking-tight">{exercise.name}</h1>
         <p className="mt-1 text-sm text-ink-soft">{exercise.muscles}</p>
       </header>
