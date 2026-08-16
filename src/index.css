@@ -1,0 +1,53 @@
+@import 'tailwindcss';
+
+/*
+  Design tokens for Virtual Trainer.
+  The look is deliberately warm and calm rather than "hardcore gym" — beginners
+  should feel invited in, not sized up.
+*/
+@theme {
+  --color-ink: #1b1917;
+  --color-ink-soft: #57514b;
+  --color-muted: #8a827a;
+
+  --color-cream: #faf6f0;
+  --color-card: #ffffff;
+  --color-line: #ece5da;
+
+  --color-brand: #12857c;
+  --color-brand-dark: #0b625b;
+  --color-brand-soft: #e3f3f1;
+
+  --color-accent: #ff7a5a;
+  --color-accent-soft: #ffede7;
+
+  --font-sans:
+    ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-cream font-sans text-ink antialiased;
+    /* The prototype is a single fixed viewport; scrolling happens inside a screen. */
+    overscroll-behavior-y: none;
+  }
+
+  /* Tap targets shouldn't flash a grey box on iOS. */
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@utility pb-safe {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+@utility pt-safe {
+  padding-top: max(0.75rem, env(safe-area-inset-top));
+}
