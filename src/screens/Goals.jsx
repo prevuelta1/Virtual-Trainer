@@ -46,7 +46,8 @@ export default function Goals() {
               onClick={() => toggle('goals', goal.id)}
               title={goal.label}
               blurb={goal.blurb}
-              badge={chosen[0] === goal.id ? 'Main focus' : null}
+              badge="Main focus"
+              badgeVisible={chosen[0] === goal.id}
             />
           )
         })}

@@ -81,7 +81,11 @@ export default function Routine() {
 
       <Field
         label="Any of these look familiar?"
-        hint="Optional. We will favour movements you already know for your first week."
+        hint={
+          profile.knownExercises.length > 0
+            ? `${profile.knownExercises.length} selected. We will favour these for your first week.`
+            : 'Optional. We will favour movements you already know for your first week.'
+        }
       >
         <div className="flex flex-wrap gap-2">
           {familiar.map((exercise) => (

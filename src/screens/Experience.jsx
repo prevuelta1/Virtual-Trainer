@@ -78,7 +78,11 @@ export default function Experience() {
 
       <Field
         label="Anything to work around?"
-        hint="Optional. We will swap out movements that tend to aggravate these."
+        hint={
+          profile.limitations.length > 0
+            ? `${profile.limitations.length} selected. We will swap out movements that tend to aggravate these.`
+            : 'Optional. We will swap out movements that tend to aggravate these.'
+        }
       >
         <div className="flex flex-wrap gap-2">
           {Object.entries(LIMITATION_LABELS).map(([id, label]) => (

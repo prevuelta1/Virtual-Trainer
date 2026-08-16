@@ -88,7 +88,14 @@ export default function Schedule() {
       </Field>
 
       {profile.gymType && profile.gymType !== 'bodyweight' && (
-        <Field label="What do you have?" hint="We pre-filled this — tap to adjust.">
+        <Field
+          label="What do you have?"
+          hint={
+            profile.equipment.length > 0
+              ? `We pre-filled this — tap to adjust. ${profile.equipment.length} selected.`
+              : 'Nothing selected yet — tap whatever you have access to.'
+          }
+        >
           <div className="flex flex-wrap gap-2">
             {EQUIPMENT.map((item) => (
               <Chip
